@@ -12,40 +12,25 @@ class Cart {
   }
   
   async newCart () {
-      if(!fs.existsSync(this.path)) {
-  
-          this.id++;
-          const newCart = {
-              id: this.id,
-              products: []
-          }
-  
-          const carts = []
-          carts.push(newCart)
-
-          const jsonString = JSON.stringify(carts, null, 2);
-          
-          fs.writeFile(this.path, jsonString, 'utf8', (err) => {
-              if (err) {
-                  console.error('Error writing file:', err);
-                  return;
-              }
-          console.log('File has been written successfully!')
-          })        
-          return 'Path created and product added'    
-      } else {
           const data = await fs.promises.readFile(this.path, 'utf-8')
           const dataParse = JSON.parse(data)
           const carts = [...dataParse]
 
-          let { id } = carts[carts.length - 1];
-
           const newCart = {
-              id: this.id,
+              id: 0,
               products: []
           }
 
-          newCart.id = ++id
+          
+          if (!carts[carts.length - 1]) {
+            newCart.id = 1
+            } else {
+            if (carts[carts.length - 1].id) {
+            let { id } = carts[carts.length - 1]
+            newCart.id = ++id
+            }
+          }
+
           carts.push(newCart)
 
           const jsonString = JSON.stringify(carts, null, 2);
@@ -57,7 +42,6 @@ class Cart {
               }
               console.log('File has been written successfully!')
           })   
-      }             
           
   }
 

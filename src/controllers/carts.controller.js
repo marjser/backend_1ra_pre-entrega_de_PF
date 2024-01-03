@@ -6,8 +6,8 @@ const fs = require('fs')
 const router = Router()
 
 
-const cartPath = 'carts.json'
-const productsPath = 'products.json'
+const cartPath = process.cwd() + '/src/data/carts.json'
+const productsPath = process.cwd() + '/src/data/products.json'
 
 const carrito = new Cart (cartPath)
 

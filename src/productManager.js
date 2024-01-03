@@ -33,26 +33,6 @@ class ProductManager {
               ...objProducto 
             }
 
-            if(!fs.existsSync(this.path)) {
-              
-                this.products.push(newProd)
-              
-                const jsonString = JSON.stringify(this.products, null, 2);
-                
-                fs.writeFile(this.path, jsonString, 'utf8', (err) => {
-
-                    if (err) {
-                        console.error('Error writing file:', err);
-                        return;
-                    }
-                    console.log('File has been written successfully!')
-
-                })        
-                
-                return 'Path created and product added'    
-  
-            } else {
-
                 const data = await fs.promises.readFile(this.path, 'utf-8')
                 const dataParse = JSON.parse(data)
                 this.products = [...dataParse]
@@ -63,8 +43,14 @@ class ProductManager {
                     console.log('ERROR: El código  ya se encuentra utilizado.')
                 } else {
                   
-                    let { id } = this.products[this.products.length - 1];
-                    newProd.id = ++id
+                    
+                    if (!this.products[this.products.length - 1]) {
+                        let id = 1
+                    } else {
+                        let { id } = this.products[this.products.length - 1];
+                        newProd.id = ++id
+                    }
+
                     this.products.push(newProd)
                   
                     const jsonString = JSON.stringify(this.products, null, 2);
@@ -79,7 +65,6 @@ class ProductManager {
                 }
                     
                 return 'Product added'
-            }
         }
     }
     

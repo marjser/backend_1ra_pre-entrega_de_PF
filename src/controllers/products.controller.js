@@ -3,7 +3,7 @@ const ProductManager = require('../productManager')
 
 const router = Router()
 
-const productsPath = 'products.json'
+const productsPath = process.cwd() + '/src/data/products.json'
 const productManager = new ProductManager('empresa', productsPath)
 
 // Endpoint para obtener todos los productos agregados con el limitador
@@ -46,9 +46,11 @@ router.get('/:pid', (req, res) => {
 
         if (!product) {
             res.status(404).json({ error: 'Not found' })
+        } else {
+            res.json({payload: product})
         }
 
-        res.json({payload: product})
+        //res.json({payload: product})
         
     }
     
@@ -65,6 +67,7 @@ router.get('*', (req, res) => {
 // Endpoint para agregar un nuevo producto
 
 router.post('/', (req, res) => {
+
     const { title , description, code , price , stock , category , thumbnail} = req.body
     
     const newProduct = {
