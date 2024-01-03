@@ -42,7 +42,7 @@ router.get('/:pid', (req, res) => {
 
     productsId = async () =>{
         const products = await productManager.getProducts()   
-        const product = products.find(product => product.id === Number(pid))
+        const product = products.find(product => product.id === pid)
 
         if (!product) {
             res.status(404).json({ error: 'Not found' })

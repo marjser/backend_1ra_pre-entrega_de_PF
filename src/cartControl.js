@@ -1,4 +1,5 @@
-const fs = require('fs')
+const fs = require('fs');
+const uuid4 = require('uuid4');
 
 
 class Cart {
@@ -7,7 +8,7 @@ class Cart {
   path;
   
   constructor (path) {
-      this.id = 0;
+      this.id = '';
       this.path = path
   }
   
@@ -17,19 +18,10 @@ class Cart {
           const carts = [...dataParse]
 
           const newCart = {
-              id: 0,
+              id: uuid4(),
               products: []
           }
 
-          
-          if (!carts[carts.length - 1]) {
-            newCart.id = 1
-            } else {
-            if (carts[carts.length - 1].id) {
-            let { id } = carts[carts.length - 1]
-            newCart.id = ++id
-            }
-          }
 
           carts.push(newCart)
 
@@ -50,8 +42,8 @@ class Cart {
   async addProd (cid, pid) {
       if(fs.existsSync(this.path)) {
           const data = await fs.promises.readFile(this.path, 'utf-8')
-          const cidN = Number(cid)
-          const pidN = Number(pid)
+          const cidN = cid
+          const pidN = pid
           const dataParse = JSON.parse(data)
           const carts = [...dataParse]
           const cIndex = carts.findIndex(cart => cart.id === cidN) 

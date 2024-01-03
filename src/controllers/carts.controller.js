@@ -34,7 +34,7 @@ router.get('/:cid', (req, res) => {
         const carts = await carrito.getCarts()
         const productsJson = await fs.promises.readFile(productsPath, 'utf-8')
         const productsParsed = JSON.parse(productsJson)
-        const cart = carts.find(cart => cart.id === Number(cid))
+        const cart = carts.find(cart => cart.id === cid)
     
         if (!carts || !productsJson || !cart) {
             res.status(404).json({ error: 'Not found' })
@@ -92,7 +92,7 @@ router.post('/:cid/product/:pid', (req, res) => {
         const productsJson = await fs.promises.readFile(productsPath, 'utf-8')
         const productsParsed = JSON.parse(productsJson)
 
-        if (!productsParsed.find(prod => prod.id === Number(pid))) {
+        if (!productsParsed.find(prod => prod.id === pid)) {
             return res.status(400).send({status:"error", error:"Incorrect Id Product"})
         } else {
             const newCart = await carrito.addProd(cid, pid)

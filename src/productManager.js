@@ -1,4 +1,6 @@
 const fs = require('fs')
+const uuid4 = require('uuid4')
+
 
 
 class ProductManager {
@@ -11,7 +13,7 @@ class ProductManager {
     constructor(productManager, path){
 
         this.productManager = productManager; 
-        this.id = 0;
+        this.id = '';
         this.products = [];
         this.path = path
 
@@ -25,9 +27,8 @@ class ProductManager {
             return 'Missing input data'
         } else {
           
-            this.id++;
             const newProd = {
-              id: this.id,
+              id: uuid4(),
               productManager: this.productManager,
               status: true,
               ...objProducto 
@@ -42,14 +43,6 @@ class ProductManager {
                 if (newCode) {
                     console.log('ERROR: El código  ya se encuentra utilizado.')
                 } else {
-                  
-                    
-                    if (!this.products[this.products.length - 1]) {
-                        let id = 1
-                    } else {
-                        let { id } = this.products[this.products.length - 1];
-                        newProd.id = ++id
-                    }
 
                     this.products.push(newProd)
                   
@@ -91,7 +84,7 @@ class ProductManager {
         this.products = [...dataParse]
         let newCode 
 
-        let product = this.products.find(product => product.id === Number(pid))
+        let product = this.products.find(product => product.id === pid)
         
         if (newObj.code)  { //Verifica en caso de haber un código a modificar, sino está siento utilizado por otro producto.
             if (this.products.find((prod) => prod.code === newObj.code)){
@@ -114,8 +107,8 @@ class ProductManager {
                 }
             }
             
-            product.id = Number(pid)
-            let index = this.products.findIndex(product => product.id === Number(pid))
+            product.id = pid
+            let index = this.products.findIndex(product => product.id === pid)
 
             this.products[index] = product
 
@@ -145,7 +138,7 @@ class ProductManager {
         this.products = [...dataParse]
 
 
-        let index = this.products.findIndex(product => product.id === Number(pid))
+        let index = this.products.findIndex(product => product.id === pid)
 
         
         if (index != -1) {
